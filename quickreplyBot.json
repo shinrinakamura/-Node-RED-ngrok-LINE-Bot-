@@ -1,0 +1,262 @@
+[
+    {
+        "id": "0a4dcb785e0cb63a",
+        "type": "http in",
+        "z": "197b39e49f71efad",
+        "name": "line受信",
+        "url": "/linetest",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 160,
+        "wires": [
+            [
+                "b175a1a852040cad",
+                "673b8a593cbe52f4"
+            ]
+        ]
+    },
+    {
+        "id": "b175a1a852040cad",
+        "type": "http response",
+        "z": "197b39e49f71efad",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 330,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "673b8a593cbe52f4",
+        "type": "function",
+        "z": "197b39e49f71efad",
+        "name": "メッセージ取り出し",
+        "func": "var message = msg.payload.events[0].message.text\nmsg.payload = message\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 160,
+        "wires": [
+            [
+                "4a2a82aabec8998d"
+            ]
+        ]
+    },
+    {
+        "id": "844ca46fc31025cc",
+        "type": "http request",
+        "z": "197b39e49f71efad",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.line.me/v2/bot/message/push",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 910,
+        "y": 160,
+        "wires": [
+            [
+                "8bc5e2bd1ab61383"
+            ]
+        ]
+    },
+    {
+        "id": "4a2a82aabec8998d",
+        "type": "switch",
+        "z": "197b39e49f71efad",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "こんにちは",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "日付",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "時間",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 530,
+        "y": 160,
+        "wires": [
+            [
+                "8d2462966c0ad38f"
+            ],
+            [
+                "ed71895988b5fc44"
+            ],
+            [
+                "7bf430cca20328d4"
+            ]
+        ]
+    },
+    {
+        "id": "8d2462966c0ad38f",
+        "type": "function",
+        "z": "197b39e49f71efad",
+        "name": "クイックリプライ",
+        "func": "\nvar post_request = {\n    \"headers\": {\n        \"content-type\": \"application/json; charset=UTF-8\",\n        \"Authorization\": \" Bearer \" + \"チャンネルアクセストークン\"\n    },\n    \"payload\": {\n        \"to\": \"ユーザーID\",\n        \"messages\":\n        [ \n            {\n              \"type\": \"text\",\n              \"text\": \"なにか御用でしょうか\",\n              \"quickReply\": {\n                  \"items\": \n                  [\n                      {\n                          \"type\": \"action\",\n                          \"action\": {\n                              \"type\": \"message\",\n                              \"label\": \"今日の日付は\",\n                              \"text\": \"日付\"\n                          }\n                      },\n                      {\n                          \"type\": \"action\",\n                          \"action\": {\n                              \"type\": \"message\",\n                              \"label\": \"今の時間は\",\n                              \"text\": \"時間\"\n                          }\n                      },\n                  ]\n              }     \n            } \n            \n        ]\n    }\n};\n\nreturn post_request;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 120,
+        "wires": [
+            [
+                "f91fc5eeb852af54"
+            ]
+        ]
+    },
+    {
+        "id": "f91fc5eeb852af54",
+        "type": "http request",
+        "z": "197b39e49f71efad",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.line.me/v2/bot/message/push",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 910,
+        "y": 120,
+        "wires": [
+            [
+                "043c9f71b52db737"
+            ]
+        ]
+    },
+    {
+        "id": "043c9f71b52db737",
+        "type": "debug",
+        "z": "197b39e49f71efad",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1110,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "8bc5e2bd1ab61383",
+        "type": "debug",
+        "z": "197b39e49f71efad",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1110,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "ed71895988b5fc44",
+        "type": "function",
+        "z": "197b39e49f71efad",
+        "name": "日付け",
+        "func": "var today = new Date()\nvar year = today.getFullYear()\nvar month = today.getMonth()+1\nvar day = today.getDate()\n\nlineMessage = \"今日の日付は\"+year+\"年\"+month+\"月\"+day+\"日です\"\n\nvar post_request = {\n    \"headers\": {\n        \"content-type\": \"application/json; charset=UTF-8\",\n        \"Authorization\": \" Bearer \" + \"チャンネルアクセストークン\"\n    },\n    \"payload\": {\n        \"to\": \"ユーザーID\",\n        \"messages\": [\n            {\n                \"type\": \"text\",         //送信するメッセージタイプ\n                \"text\": lineMessage     //送信するメッセージ\n            }\n        ]   \n    }\n};\n\nreturn post_request;\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 160,
+        "wires": [
+            [
+                "844ca46fc31025cc"
+            ]
+        ]
+    },
+    {
+        "id": "7bf430cca20328d4",
+        "type": "function",
+        "z": "197b39e49f71efad",
+        "name": "時間",
+        "func": "var today = new Date()\nvar hour = today.getHours()\nvar minute = today.getMinutes()\n\nlineMessage = \"今の時間は\"+hour+\"時\"+minute+\"分です\"\n\nvar post_request = {\n    \"headers\": {\n        \"content-type\": \"application/json; charset=UTF-8\",\n        \"Authorization\": \" Bearer \" + \"チャンネルアクセストークン\"\n    },\n    \"payload\": {\n        \"to\": \"ユーザーID\",\n        \"messages\": [\n            {\n                \"type\": \"text\",         //送信するメッセージタイプ\n                \"text\": lineMessage     //送信するメッセージ\n            }\n        ]   \n    }\n};\n\nreturn post_request;\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 200,
+        "wires": [
+            [
+                "1313f898a6f48226"
+            ]
+        ]
+    },
+    {
+        "id": "1313f898a6f48226",
+        "type": "http request",
+        "z": "197b39e49f71efad",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.line.me/v2/bot/message/push",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 910,
+        "y": 200,
+        "wires": [
+            [
+                "833913703424d92e"
+            ]
+        ]
+    },
+    {
+        "id": "833913703424d92e",
+        "type": "debug",
+        "z": "197b39e49f71efad",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1110,
+        "y": 200,
+        "wires": []
+    }
+]
