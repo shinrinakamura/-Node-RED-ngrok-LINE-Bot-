@@ -1,0 +1,89 @@
+[
+    {
+        "id": "6e4d06a2fd6a9e3e",
+        "type": "http in",
+        "z": "eee4be82054739d2",
+        "name": "line受信",
+        "url": "/linetest",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 140,
+        "wires": [
+            [
+                "85c5b0a8099b2813",
+                "72c4298698a4d6c0"
+            ]
+        ]
+    },
+    {
+        "id": "85c5b0a8099b2813",
+        "type": "http response",
+        "z": "eee4be82054739d2",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 330,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "72c4298698a4d6c0",
+        "type": "function",
+        "z": "eee4be82054739d2",
+        "name": "メッセージ取り出し",
+        "func": "var message = msg.payload.events[0].message.text\nmsg.payload = message\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 140,
+        "wires": [
+            [
+                "b8473a8695bf8997"
+            ]
+        ]
+    },
+    {
+        "id": "b8473a8695bf8997",
+        "type": "function",
+        "z": "eee4be82054739d2",
+        "name": "オウム返し",
+        "func": "var lineMessage = msg.payload   //受信した内容をそのままメッセージに詰める\n\nvar post_request = {\n    \"headers\": {\n        \"content-type\": \"application/json; charset=UTF-8\",\n        \"Authorization\": \" Bearer \" + \"チャンネルアクセストークン\"\n    },\n    \"payload\": {\n        \"to\": \"ユーザーID\",\n        \"messages\": [\n            {\n                \"type\": \"text\",         //送信するメッセージタイプ\n                \"text\": lineMessage     //送信するメッセージ\n            }\n        ]   \n    }\n};\n\nreturn post_request;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 140,
+        "wires": [
+            [
+                "6d04124f8acc9110"
+            ]
+        ]
+    },
+    {
+        "id": "6d04124f8acc9110",
+        "type": "http request",
+        "z": "eee4be82054739d2",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.line.me/v2/bot/message/push",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 710,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    }
+]
