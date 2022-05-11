@@ -1,6 +1,7 @@
 # -Node-RED-ngrok-LINE-Bot-
 
-ローカル環境でNode-REDとngrokを立ち上げてLINE Botのやり取りをするの記事の中で使用するNode-REDのフローです。<br>
+ローカル環境でNode-REDとngrokを立ち上げてLINEの開発環境を作成した時に<br>
+デモとしてボットを動作させてみるためのフローです。<br>
 
 parroting AnotherWords.jsonはオウム返しボットのフローになっています。<br>
 Node-REDに取り込んでいただいて、オウム返しという名前のfunctionノードの中を書き換えます。<br>
